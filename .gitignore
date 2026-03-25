@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# Extracted/temp files
+earley_text.txt
+hwparse_sectionD.txt
+wallstreet_output.txt
+perm2_output.txt
+
+# Large binary files not authored by student
+treebank-manual.pdf
+treebank-notation.pdf
+lect10-earley.ppt
+
+# OS
+.DS_Store
+Thumbs.db

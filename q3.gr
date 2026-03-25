@@ -1,0 +1,14 @@
+1	ROOT	S
+1	S	NP VP
+0.3	NP	NP PP
+0.7	NP	Det N
+0.6	VP	V NP
+0.4	VP	VP PP
+1	PP	P NP
+1	Det	the
+1	Det	a
+0.33	N	man
+0.33	N	soldier
+0.34	N	gun
+1	V	shot
+1	P	with
