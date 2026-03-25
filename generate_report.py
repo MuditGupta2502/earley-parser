@@ -82,7 +82,19 @@ code_style = ParagraphStyle('Code', parent=styles['Code'],
 def HR(col=GOLD, thick=0.8):
     return HRFlowable(width='100%', thickness=thick, color=col, spaceAfter=4, spaceBefore=2)
 def Code(text):
-    return Preformatted(text, code_style)
+    _sty = ParagraphStyle('_pcode', fontName='Courier', fontSize=8, leading=11,
+                          textColor=CODEFG, spaceBefore=0, spaceAfter=0,
+                          leftIndent=0, rightIndent=0)
+    t = Table([[Preformatted(text, _sty)]], colWidths=[15.5*cm])
+    t.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), DARKBG),
+        ('LEFTPADDING', (0,0), (-1,-1), 8),
+        ('RIGHTPADDING', (0,0), (-1,-1), 8),
+        ('TOPPADDING', (0,0), (-1,-1), 6),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 6),
+        ('BOX', (0,0), (-1,-1), 0.5, MIDGRAY),
+    ]))
+    return [t, Spacer(1, 4)]
 
 def section_header(num, title, subtitle=None):
     inner = [[
@@ -342,14 +354,14 @@ story += [Paragraph(
     'total weight of a tree = sum of all rule weights.', body)]
 
 story += [Paragraph('Parse Tree 1 - "time flies" as compound NP; "like" as verb', h2)]
-story += [Code(
+story += Code(
     '(ROOT\n'
     '  (S\n'
     '    (NP (N time) (N flies))          NP -> N N    [P=0.25]\n'
     '    (VP\n'
     '      (V like)                       VP -> V NP   [P=0.6]\n'
     '      (NP (D an) (N arrow)))))       NP -> D N    [P=0.4]'
-)]
+)
 p1_rows = [
     ['Rule', 'Prob.', '-log2(prob)'],
     ['ROOT -> S',   '1.0',  '0.0'],
@@ -368,7 +380,7 @@ p1_rows = [
 story += [tbl(p1_rows, col_widths=[6*cm, 2*cm, 7.5*cm]), Spacer(1, 0.3*cm)]
 
 story += [Paragraph('Parse Tree 2 - "time" as NP; "flies" as V; "like an arrow" as ADVP  [BEST PARSE]', h2)]
-story += [Code(
+story += Code(
     '(ROOT\n'
     '  (S\n'
     '    (NP (N time))                    NP -> N      [P=0.35]\n'
@@ -377,7 +389,7 @@ story += [Code(
     '      (ADVP\n'
     '        (ADV like)                   ADVP -> ADV NP [P=1.0]\n'
     '        (NP (D an) (N arrow))))))'
-)]
+)
 p2_rows = [
     ['Rule', 'Prob.', '-log2(prob)'],
     ['ROOT -> S',      '1.0', '0.0'],
@@ -411,7 +423,7 @@ story += [Paragraph(
     'or to the <b>NP</b> "the soldier" (possession - the soldier had a gun).', body)]
 
 story += [Paragraph('Designed Grammar - q3.gr:', h2)]
-story += [Code(
+story += Code(
     '1    ROOT  S\n'
     '1    S     NP VP\n'
     '0.3  NP    NP PP        # PP-attachment onto NP (reading B)\n'
@@ -426,20 +438,20 @@ story += [Code(
     '0.34 N     gun\n'
     '1    V     shot\n'
     '1    P     with'
-)]
+)
 
 story += [Paragraph('Two Competing Readings:', h2)]
-story += [Code(
+story += Code(
     'Reading A (VP-attachment - instrument, most likely):\n'
     '(ROOT (S (NP (Det the) (N man))\n'
     '         (VP (VP (V shot) (NP (Det the) (N soldier)))\n'
-    '             (PP (P with) (NP (Det a) (N gun))))))\n\n'
+    '             (PP (P with) (NP (Det a) (N gun)))))\n\n'
     'Reading B (NP-attachment - possession):\n'
     '(ROOT (S (NP (Det the) (N man))\n'
     '         (VP (V shot)\n'
     '             (NP (NP (Det the) (N soldier))\n'
     '                 (PP (P with) (NP (Det a) (N gun)))))))'
-)]
+)
 
 story += [Paragraph('Probability Comparison:', h2)]
 ab = [
@@ -494,7 +506,7 @@ fields = [
 story += [tbl(fields, col_widths=[3.5*cm, 2.5*cm, 9.5*cm]), Spacer(1, 0.3*cm)]
 
 story += [Paragraph('Viterbi re-enqueue in Agenda.push():', bold)]
-story += [Code(
+story += Code(
     'item_key = (item.rule, item.dot_position, item.start_position)\n\n'
     'if item_key in self._index:\n'
     '    idx = self._index[item_key]\n'
@@ -510,7 +522,7 @@ story += [Code(
     'else:\n'
     '    self._items.append(item)                    # brand-new item\n'
     '    self._index[item_key] = len(self._items) - 1'
-)]
+)
 story += [Paragraph(
     'Without re-enqueue, a cheaper derivation arriving after the old item was popped would '
     'never propagate downstream. The Section D reading explicitly warns: '
@@ -541,7 +553,7 @@ story += [Paragraph('Why O(1) push is necessary:', bold),
 ]
 
 story += [Paragraph('4.3  parse2.py Additional Optimisations', h2)]
-story += [Code(
+story += Code(
     '# 1. PREDICTION CACHING - never re-predict (symbol, position)\n'
     'self._predicted: Set[Tuple[str,int]] = set()\n'
     'def _predict_cached(self, sym, pos):\n'
@@ -560,7 +572,7 @@ story += [Code(
     '    unprocessed = self._items[self._next:]\n'
     '    unprocessed.sort(key=lambda x: x.weight)\n'
     '    self._items = self._items[:self._next] + unprocessed[:beam_width]'
-)]
+)
 story += callout(
     '<b>Section D compliance:</b> Section B.2 of the JHU reading describes the reprocessing '
     'requirement. Our Viterbi re-enqueue satisfies it. Section D.E.1 describes prediction caching; '
@@ -676,7 +688,7 @@ story += [Paragraph(
     'the JHU dataset. The parser was run without any modifications.', body)]
 
 story += [Paragraph('unseen.gr - Colours and Objects Grammar:', h2)]
-story += [Code(
+story += Code(
     '1    ROOT  S\n'
     '0.6  S     NP VP\n'
     '0.4  S     NP VP PP        # adverbial PP\n'
@@ -693,7 +705,7 @@ story += [Code(
     '0.5  V     likes  |  0.5  V     sees\n'
     '0.4  Adj   red    |  0.3  Adj   broken   |  0.3  Adj   small\n'
     '0.5  P     near   |  0.5  P     under'
-)]
+)
 
 story += [Paragraph('Results - python parse.py unseen.gr unseen.sen:', h2)]
 un_d = [
