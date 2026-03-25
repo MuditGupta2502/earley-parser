@@ -186,6 +186,21 @@ def tbl_check(data, col_widths=None):
 
 story = []
 
+_gh_link = 'https://github.com/MuditGupta2502/earley-parser'
+_gh_bar = Table(
+    [[Paragraph(f'\u2665  GitHub Repository: <u><a href="{_gh_link}" color="#2E86AB">{_gh_link}</a></u>',
+                S('_gh', fontSize=9, fontName='Helvetica-Bold', textColor=NAVY, spaceAfter=0))]],
+    colWidths=[15.5*cm])
+_gh_bar.setStyle(TableStyle([
+    ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#D6E4F0')),
+    ('LEFTPADDING', (0,0), (-1,-1), 10),
+    ('RIGHTPADDING', (0,0), (-1,-1), 10),
+    ('TOPPADDING', (0,0), (-1,-1), 5),
+    ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+    ('BOX', (0,0), (-1,-1), 0.5, STEEL),
+]))
+story += [_gh_bar, Spacer(1, 0.2*cm)]
+
 story += [
     Spacer(1, 0.3*cm),
     Paragraph('Probabilistic Context-Free Grammar Parsing', S('Sub',
