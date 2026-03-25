@@ -1,0 +1,23 @@
+1	ROOT	S
+0.6	S	NP VP
+0.4	S	NP VP PP
+0.5	NP	Name
+0.3	NP	Det N
+0.2	NP	Det Adj N
+0.6	VP	V NP
+0.4	VP	V
+1	PP	P NP
+0.5	Name	Alice
+0.5	Name	Bob
+0.5	Det	the
+0.5	Det	a
+0.4	N	cat
+0.3	N	robot
+0.3	N	table
+0.5	V	likes
+0.5	V	sees
+0.4	Adj	red
+0.3	Adj	broken
+0.3	Adj	small
+0.5	P	near
+0.5	P	under

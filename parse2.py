@@ -339,6 +339,7 @@ def main():
                 if chart.accepted():
                     tree = chart.get_parse_tree()
                     print(tree_to_string(tree))
+                    print(chart.best_root.weight)
                 else:
                     print(f"# No parse for: {sentence}")
                 
