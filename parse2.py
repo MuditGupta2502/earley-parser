@@ -341,7 +341,7 @@ def main():
                     print(tree_to_string(tree))
                     print(chart.best_root.weight)
                 else:
-                    print(f"# No parse for: {sentence}")
+                    print("NONE")
                 
                 if args.logging_level == logging.DEBUG:
                     log.debug(f"Profile: {chart.profile}")
