@@ -107,8 +107,9 @@ def section_header(num, title, subtitle=None):
 
 def callout(text, color=GOLD, icon='*'):
     data = [[
-        Table([[Paragraph(f'<font color="{color.hexval()}">{icon}</font>',
-                          S('_ic', fontSize=14, fontName='Helvetica-Bold', alignment=TA_CENTER))]],
+        Table([[Paragraph(f'<b>{icon}</b>',
+                          S('_ic', fontSize=12, fontName='Helvetica-Bold',
+                            textColor=color, alignment=TA_CENTER))]],
               colWidths=[0.5*cm],
               style=[('VALIGN',(0,0),(-1,-1),'MIDDLE'),('LEFTPADDING',(0,0),(-1,-1),0)]),
         Paragraph(text, S('_cb', fontSize=9.5, leading=14, spaceAfter=0))
@@ -174,7 +175,7 @@ def tbl_check(data, col_widths=None):
 story = []
 
 story += [
-    Spacer(1, 2.5*cm),
+    Spacer(1, 0.3*cm),
     Paragraph('Probabilistic Context-Free Grammar Parsing', S('Sub',
         fontSize=12, textColor=STEEL, spaceAfter=6, fontName='Helvetica-Bold')),
     HR(GOLD, 1.5),
@@ -457,7 +458,7 @@ story += [tbl(ab, col_widths=[4*cm, 5.5*cm, 5.5*cm]), Spacer(1, 0.3*cm)]
 
 story += callout(
     '<b>Verified by parser:</b> python parse.py q3.gr q3.sen outputs the VP-attachment reading '
-    'with weight 8.358. Both analyses are tracked in the chart; '
+    'with weight 8.3579. Both analyses are tracked in the chart; '
     'both S->NP VP*[0] completions appear in column 8.',
     color=GREEN_OK, icon='OK')
 
@@ -615,11 +616,14 @@ story += [Paragraph(
 
 story += [Paragraph('papa.gr - Classic PP-attachment Grammar', h2)]
 papa_d = [
-    ['Input',                              'Output / Result'],
-    ['Papa ate the caviar',                '(ROOT (S (NP Papa) (VP (V ate) (NP (Det the) (N caviar)))))  w=9.21'],
-    ['Papa ate caviar',                    '# No parse  (no Det-less NP rule in papa.gr)'],
-    ['Papa ate the caviar with a spoon',  '(ROOT (S ... (VP (VP ...) (PP ...))))  w=14.2 -- VP attach'],
-    ['the caviar ate a spoon',             '(ROOT (S (NP (Det the) (N caviar)) (VP (V ate) (NP ...))))'],
+    ['Input sentence',                     'Output'],
+    ['Papa ate the caviar',                '(ROOT (S (NP Papa) (VP (V ate) (NP (Det the) (N caviar)))))  w=6.158'],
+    ['Papa ate caviar',                    'NONE  (no Det-less NP rule in papa.gr)'],
+    ['Papa ate the',                       'NONE  (incomplete NP)'],
+    ['Papa ate the caviar with a spoon',   '(ROOT (S (NP Papa) (VP (VP (V ate) (NP (Det the) (N caviar))) (PP (P with) (NP (Det a) (N spoon))))))  w=10.217  [VP-attach wins]'],
+    ['ate the caviar',                     'NONE  (no subject)'],
+    ['the caviar ate a spoon',             '(ROOT (S (NP (Det the) (N caviar)) (VP (V ate) (NP (Det a) (N spoon)))))  w=5.158'],
+    ['the caviar is pink',                 'NONE  (no copula / no colour adj in papa.gr)'],
 ]
 story += [tbl(papa_d, col_widths=[5.5*cm, 10*cm]), Spacer(1, 0.3*cm)]
 
@@ -714,7 +718,7 @@ story += callout(
     'parse correctly with sensible weights. '
     'Failures are graceful and correct: the grammar deliberately omits NP->Det Adj Adj N '
     '(no stacked adjectives) and does not include "dog" or "barks". '
-    'The parser prints "# No parse for: ..." and continues without crashing.',
+    'The parser prints NONE and continues without crashing.',
     color=GREEN_OK, icon='OK')
 
 story += [Paragraph('Why this demonstrates autograder robustness:', h2)]
@@ -770,7 +774,7 @@ doc = SimpleDocTemplate(
     OUTPUT,
     pagesize=A4,
     rightMargin=2*cm, leftMargin=2*cm,
-    topMargin=3.2*cm, bottomMargin=1.8*cm,
+    topMargin=3.0*cm, bottomMargin=1.8*cm,
     title='Earley Parser Assignment Report',
     author='MuditGupta2502',
 )
